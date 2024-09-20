@@ -1,0 +1,38 @@
+<!-- tampilan untuk melihat daftar tugas mahasiswa yang telah dibuat -->
+<%- include('../layouts/dosenheader.ejs') %>
+<!-- <h2>Daftar Tugas Mahasiswa</h2> -->
+<% if (tugasList.length == 0) { %>
+<p>belum ada mahasiswa mengupload tugas</p>
+<% } else { %>
+<div class="card shadow mt-4 mb-4">
+  <div class="card-body">
+    <h3 class="mb-3">Daftar Tugas Mahasiswa</h3>
+    <div class="table-responsive">
+      <table class="table table-bordered" id="dataTable" width="100%" cellspacing="0">
+        <thead>
+          <tr>
+            <th>Judul Tugas</th>
+            <th>Nama Mahasiswa</th>
+            <th>Aksi</th>
+          </tr>
+        </thead>
+        <tbody>
+          <%console.log(tugasList);%> <% tugasList.forEach(tugas => { %>
+          <tr>
+            <td><%= tugas.judul %></td>
+            <td><%= tugas.mahasiswa %></td>
+            <td>
+              <a href="/dosen/course/<%= courseId %>/tugas/<%= tugas._id %>">
+                <button class="btn btn-outline-primary btn-sm">Detail</button>
+              </a>
+            </td>
+          </tr>
+        <% }) %>
+        </tbody>
+      </table>
+    </div>
+  </div>
+</div>
+
+<% } %>
+<%- include('../layouts/dosenfooter.ejs') %>

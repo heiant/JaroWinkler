@@ -1,0 +1,12 @@
+<!-- tampilan form buat kelas dosen -->
+<%- include('../layouts/dosenheader.ejs') %>
+<h2>Buat Kelas Baru</h2>
+
+<form action="/dosen/course" method="post">
+  <div class="mb-3">
+    <label for="courseName" class="form-label">Nama Kelas :</label>
+    <input type="text" name="courseName" class="form-control" id="courseName" style="max-width: 40%;" aria-describedby="basic-addon1" required>
+  </div>
+  <button type="submit" class="btn btn-primary">Buat</button>
+</form>
+<%- include('../layouts/dosenfooter.ejs') %>

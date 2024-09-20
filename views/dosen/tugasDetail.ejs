@@ -1,0 +1,60 @@
+<!-- tampilan untuk melihat detail tugas mahasiswa -->
+<%- include('../layouts/dosenheader.ejs') %>
+<div>
+  <h2>Detail Tugas</h2>
+
+  <ul class="list-group">
+    <li class="list-group-item">
+      <div class="row">
+        <div class="col" style="max-width: 140px"><b>Judul :</b></div>
+        <div class="col"><%= tugas.judul %></div>
+      </div>
+    </li>
+    <li class="list-group-item">
+      <div class="row">
+        <div class="col" style="max-width: 140px"><b>Deskripsi :</b></div>
+        <div class="col"><%= tugas.deskripsi %></div>
+      </div>
+    </li>
+    <li class="list-group-item">
+      <div class="row">
+        <div class="col" style="max-width: 140px"><b>Nama :</b></div>
+        <div class="col"><%= tugas.mahasiswa %></div>
+      </div>
+    </li>
+  </ul>
+</div>
+<a href="/<%= tugas.tugas %>">
+  <button class="btn btn-outline-primary mt-3 mb-3" target="_blank">
+    Lihat File
+  </button>
+</a>
+
+<h3 class="border-top">Bandingkan dengan Tugas Lain</h3>
+
+<form action="/dosen/tugas/compare" method="post">
+  <div class="mb-3">
+    <input
+      type="hidden"
+      name="id1"
+      class="form-control"
+      aria-describedby="basic-addon1"
+      value="<%= tugas._id %>"
+    />
+    <label for="id2" class="form-label">Pilih Tugas :</label>
+    <select
+      name="id2"
+      id="id2"
+      class="form-select form-select-sm mb-3"
+      aria-label=".form-select-sm example"
+    >
+      <% tugasList.forEach(tugasLain => { %>
+      <option value="<%= tugasLain._id %>">
+        <%= tugasLain.judul %> - <%= tugasLain.mahasiswa %>
+      </option>
+      <% }) %>
+    </select>
+    <button type="submit" class="btn btn-outline-primary">Bandingkan</button>
+  </div>
+</form>
+<%- include('../layouts/dosenfooter.ejs') %>

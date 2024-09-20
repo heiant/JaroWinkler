@@ -1,0 +1,68 @@
+<!DOCTYPE HTML>
+<html>
+	<head>
+		<title>Tugas AJAX Jquery</title>
+		<meta charset="UTF-8">
+		<script src="jquery-3.5.0.min.js" type="text/javascript"></script>
+		<script type="text/javascript">
+			function setTampil(){
+				var x = $.ajax({ type:"POST", url:"./mahasiswa.json", data:'', dataType: 'json', cache:false, 
+				success: function(data, status){
+									if (status=="success"){
+										var totalSKS = 0;
+										var totalBobot = 0;
+										var tabel = "<table border='1' cellpadding='5' cellspacing='0'>"+
+													"<tr><th>Nama Matakuliah</th><th>SKS</th><th>Nilai</th></tr>";
+													
+										for (i = 0; i < data.length; i++){
+											var sks = data[i].sks;
+											var nilai = data[i].nilai;
+
+											totalSKS += sks;
+					
+											switch(nilai){
+												case 'A':
+													totalBobot += sks * 4;
+													break;
+												case 'B':
+													totalBobot += sks * 3;
+													break;
+												case 'C':
+													totalBobot += sks * 2;
+													break;
+												case 'D':
+													totalBobot += sks * 1;
+													break;
+												case 'E':
+													totalBobot += sks * 0;
+													break;
+												default:
+													break;
+											}
+											tabel += "<tr>"+
+													 "	<td>"+data[i].nama+"</td>"+
+													 "	<td>"+data[i].sks+"</td>"+
+													 "	<td>"+data[i].nilai+"</td>"+
+													 "</tr>";
+													 
+													var ip = totalBobot / totalSKS;
+										}
+										tabel += "<tr><th colspan = '2'>Indeks Prestasi</th><th colspan='2'>" + ip + "</th></tr>"
+										tabel += "</tabel>";
+										$("#hasil").html(tabel);
+									}
+							},
+						  error: function (jqXhr, textStatus, errorMessage) {
+									$('#hasil').append('Error: ' + errorMessage);
+								}
+						});
+			}
+		</script>
+	</head>
+	<body>
+		<button onclick="setTampil();"> Tampilkan Data Mahasiswa</button>
+		<div id="hasil" style="margin-top: 20px;"></div>
+	</body>
+</html>
+
+

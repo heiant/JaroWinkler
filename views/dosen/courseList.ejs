@@ -1,0 +1,40 @@
+<!-- tampilan daftar kelas dosen -->
+<%- include('../layouts/dosenheader.ejs') %>
+<h2>Daftar Kelas</h2>
+<a href="/dosen/course/new">
+  <button class="btn btn-outline-primary">Buat Kelas Baru</button>
+</a>
+<% if (courses.length == 0) { %>
+<p>anda belum membuat kelas</p>
+<% } else { %>
+
+<div class="card shadow mt-4 mb-4">
+  <div class="card-body">
+    <div class="table-responsive">
+      <table class="table table-bordered" id="dataTable" width="100%" cellspacing="0">
+        <thead>
+          <tr>
+            <th>Nama Kelas</th>
+            <th>Aksi</th>
+          </tr>
+        </thead>
+        <tbody>
+          <% courses.forEach(course => { %>
+            <tr>
+              <td><%= course.courseName %></td>
+              <td>
+                <a href="/dosen/course/<%= course._id %>/students">
+                  <button class="btn btn-outline-primary btn-sm">
+                    Lihat Mahasiswa
+                  </button>
+                </a>
+              </td>
+            </tr>
+            <% }) %>
+        </tbody>
+      </table>
+    </div>
+  </div>
+</div>
+<% } %>
+<%- include('../layouts/dosenfooter.ejs') %>

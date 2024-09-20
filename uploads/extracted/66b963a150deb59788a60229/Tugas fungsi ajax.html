@@ -1,0 +1,65 @@
+<!DOCTYPE HTML>
+<html>
+
+<head>
+    <title>Tugas AJAX Jquery</title>
+    <meta charset="UTF-8">
+    <script src="jquery-3.5.0.min.js" type="text/javascript"></script>
+    <script type="text/javascript">
+        function setTampil() {
+            let sks = 0;
+            let sksip = 0;
+            let ipsks;
+            let ip = 0;
+            var x = $.ajax({
+                type: "POST",
+                url: "./mahasiswa.json",
+                data: '',
+                dataType: 'json',
+                cache: false,
+                success: function(data, status) {
+                    if (status == "success") {
+                        var tabel = "<table border='1' cellpadding='5' cellspacing='0'>" +
+                            "<tr><th>Nama Matakuliah</th><th>SKS</th><th>Nilai</th></tr>";
+                        for (i = 0; i < data.length; i++) {
+
+                            tabel += "<tr>" +
+                                "	<td>" + data[i].nama + "</td>" +
+                                "	<td>" + data[i].sks + "</td>" +
+                                "	<td>" + data[i].nilai + "</td>" +
+                                "</tr>";
+                            if (data[i].nilai == 'A') {
+                                ipsks = (data[i].sks * 4);
+                            } else if (data[i].nilai == 'B') {
+                                ipsks = (data[i].sks * 3);
+                            } else if (data[i].nilai == 'C') {
+                                ipsks = (data[i].sks * 2);
+                            } else if (data[i].nilai == 'D') {
+                                ipsks = (data[i].sks * 1);
+                            } else if (data[i].nilai == 'E') {
+                                ipsks = (data[i].sks * 0);
+                            }
+                            sks += data[i].sks;
+                            sksip += ipsks;
+                            console.log(sksip + ' ' + sks);
+                            ip = sksip / sks;
+                        }
+                        tabel += "<tr><th colspan = '2'>Indeks Prestasi</th><th colspan='2'>" + ip + "</th></tr>"
+                        tabel += "</tabel>";
+                        $("#hasil").html(tabel);
+                    }
+                },
+                error: function(jqXhr, textStatus, errorMessage) {
+                    $('#hasil').append('Error: ' + errorMessage);
+                }
+            });
+        }
+    </script>
+</head>
+
+<body>
+    <button onclick="setTampil();"> Tampilkan Data Mahasiswa</button>
+    <div id="hasil" style="margin-top: 20px;"></div>
+</body>
+
+</html>

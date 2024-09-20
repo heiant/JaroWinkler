@@ -1,0 +1,137 @@
+<!-- views/mahasiswa/courseDetail.ejs -->
+<%- include('../layouts/mhsheader.ejs') %>
+<div class="container-fluid mt-3 mb-3">
+  <div class="row">
+    <h3><%= course.courseName %></h3>
+    <% if (course.mahasiswaId.includes(user._id)) { %>
+    <form action="/mahasiswa/course/cancel" method="post">
+      <input type="hidden" name="courseId" value="<%= course._id %>"/>
+    <% } %>
+  </div>
+  <div class="row">
+    <div class="col">
+      <h5><%= course.namaLengkap%></h5>
+    </div>
+
+    <% if (!userTugas){ %>
+    <div class="col">
+      <button class="btn btn-outline-danger" onclick="return confirm('Apakah Anda Yakin ?')">Batalkan Kelas</button>
+    </div>
+    <% } %>
+  </div>
+</form>
+  <ul class="list-group mt-4">
+    <h4>Upload Tugas</h4>
+    <% if (userTugas) { %>
+    <li class="list-group-item">
+      <div class="row">
+        <div class="col" style="max-width: 140px"><b>Judul :</b></div>
+        <div class="col"><%= userTugas.judul %></div>
+      </div>
+    </li>
+    <li class="list-group-item">
+      <div class="row">
+        <div class="col" style="max-width: 140px"><b>Deskripsi :</b></div>
+        <div class="col"><%= userTugas.deskripsi %></div>
+      </div>
+    </li>
+  </ul>
+  <div class="row mt-2">
+    <div class="col">
+      <a href="/<%= userTugas.tugas %>" target="_blank"
+        ><button class="btn btn-outline-primary">Lihat tugas</button></a
+      >
+    </div>
+    <div class="col">
+      <button
+        class="btn btn-outline-secondary"
+        id="edit-tugas-btn"
+        data-bs-toggle="modal"
+        data-bs-target="#modalEdit<%= userTugas._id %>"
+      >
+        Edit Tugas
+      </button>
+    </div>
+  </div>
+
+  <div
+    class="modal fade"
+    id="modalEdit<%= userTugas._id %>"
+    tabindex="-1"
+    aria-labelledby="modalEditLabel"
+    aria-hidden="true"
+  >
+    <div class="modal-dialog modal-lg">
+      <div class="modal-content">
+        <div class="modal-header">
+          <h1 class="modal-title fs-5" id="modalEditLabel" tabindex="-1">Edit Tugas</h1>
+          <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+        </div>
+        <div class="modal-body ms-2 me-3">
+          <form action="/mahasiswa/course/edit/<%= userTugas._id %>" method="post">
+            <input type="hidden" name="tugasId" value="<%= userTugas._id %>" />
+            <input type="hidden" name="courseId" value="<%= course._id %>" />
+            <div class="mb-3 row">
+              <label for="judul" class="col-sm-3 col-form-label">Judul Tugas</label>
+              <div class="col-sm-9">
+                <input type="text" name="judulEdit" id="judulEdit" class="form-control" value="<%= userTugas.judul %>" required/>
+              </div>
+            </div>
+            <div class="mb-3 row">
+              <label for="deskripsi" class="col-sm-3 col-form-label">Deskripsi Tugas</label>
+              <div class="col-sm-9">
+                <input type="text" name="deskripsiEdit" id="deskripsiEdit" class="form-control"  value="<%= userTugas.deskripsi %>" required/>
+              </div>
+            </div>
+            <div class="mb-3 row">
+              <label for="tugasEdit" class="col-sm-3 col-form-label">Unggah Tugas Baru (opsional)</label>
+              <div class="col-sm-9">
+                <input type="file" class="form-control" id="tugasEdit" name="tugasEdit"/>
+              </div>
+            </div>
+            <div class="modal-footer">
+              <button type="button" class="btn btn-outline-secondary" data-bs-dismiss="modal">Tutup</button>
+              <button type="submit" class="btn btn-outline-primary">Simpan</button>
+            </div>
+          </form>
+        </div>
+        <script>
+          document
+            .getElementById("edit-tugas-btn")
+            .addEventListener("click", function () {
+              document.getElementById("edit-tugas-form").style.display =
+                "block";
+            });
+        </script>
+        <% } else { %>
+        <form action="/mahasiswa/course/<%= course._id %>/upload" method="post" enctype="multipart/form-data">
+          <% if (userTugas) { %>
+          <input type="hidden" name="tugasId" value="<%= userTugas._id %>" />
+          <input type="hidden" name="courseId" value="<%= course._id %>" />
+          <% } %>
+          <div class="mb-3 row">
+            <label for="judul" class="col-sm-3 col-form-label">Judul Tugas</label>
+            <div class="col-sm-9">
+              <input type="text" name="judul" id="judul" class="form-control" style="max-width: 52%;" required/>
+            </div>
+          </div>
+          <div class="mb-3 row">
+            <label for="deskripsi" class="col-sm-3 col-form-label">Deskripsi Tugas</label>
+            <div class="col-sm-9">
+              <input type="text" name="deskripsi" id="deskripsi" class="form-control" style="max-width: 52%;" required/>
+            </div>
+          </div>
+          <div class="mb-3 row">
+            <label for="file" class="col-sm-3 col-form-label">Upload File (RAR)</label>
+            <div class="col-sm-9">
+              <input type="file" name="file" id="file" accept=".pdf, .doc, .docx" class="form-control" style="max-width: 52%;" required/>
+            </div>
+          </div>
+          <button type="submit" class="btn btn-outline-primary">Upload</button>
+        </form>
+      </div>
+      <% } %>
+    </div>
+  </div>
+</div>
+<%- include('../layouts/dosenfooter.ejs') %>

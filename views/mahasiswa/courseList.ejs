@@ -1,0 +1,59 @@
+<!-- views/mahasiswa/courseList.ejs -->
+<%- include('../layouts/mhsheader.ejs') %>
+<div class="container-fluid">
+  <div class="card shadow mt-4 mb-4">
+    <div class="card-body">
+      <h3>Daftar Kelas</h3>
+      <% if (success_msg) { %>
+      <div class="alert alert-success"><%= success_msg %></div>
+      <% } %>
+      <div class="table-responsive">
+        <table
+          class="table table-bordered"
+          id="tadaTable"
+          width="100%"
+          cellspacing="0"
+        >
+          <thead>
+            <tr>
+              <th>Nama Kelas</th>
+              <th>Nama Dosen</th>
+              <th>Aksi</th>
+            </tr>
+          </thead>
+          <tbody>
+            <% courses.forEach(course => { %>
+            <tr>
+              <td><%= course.courseName %></td>
+              <td><%= course.namaLengkap %></td>
+
+              <td>
+                <% if (course.mahasiswaId.includes(user._id)) { %>
+                <a href="/mahasiswa/course/<%= course._id %>">
+                  <button class="btn btn-outline-success">
+                    Lihat Kelas
+                  </button></a
+                >
+                <% } else { %>
+                <form action="/mahasiswa/course/join" method="post">
+                  <input
+                    type="hidden"
+                    name="courseId"
+                    value="<%= course._id %>"
+                  />
+                  <button type="submit" class="btn btn-outline-primary">
+                    Gabung
+                  </button>
+                </form>
+                <% } %>
+              </td>
+            </tr>
+            <% }) %>
+          </tbody>
+        </table>
+      </div>
+    </div>
+  </div>
+</div>
+
+<%- include('../layouts/dosenfooter.ejs') %>
